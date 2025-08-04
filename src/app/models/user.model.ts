@@ -3,6 +3,13 @@ export interface User {
   username: string;
   email: string;
   password?: string; // Optional for frontend display
-  createdAt?: Date;
+  fullName?: string;
+  roleId?: number; // If role ID is direct property
+  role?: {
+    // If role is nested object
+    id: number;
+    name: string;
+  };
+  createdAt?: string;
   updatedAt?: Date;
 }

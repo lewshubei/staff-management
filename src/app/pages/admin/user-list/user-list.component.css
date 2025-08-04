@@ -1,0 +1,219 @@
+/* ===== USER LIST PAGE SPECIFIC STYLES ===== */
+
+.user-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-title h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: #374151;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.table-title svg {
+  width: 20px;
+  height: 20px;
+  color: #667eea;
+}
+
+.table-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Enhanced Table Styles */
+.user-row {
+  transition: all 0.2s ease;
+}
+
+.user-row:hover {
+  background: #f8fafc;
+  transform: scale(1.005);
+}
+
+/* User Info Cells */
+.user-id {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.user-info-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.email {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.full-name {
+  color: #374151;
+  font-weight: 500;
+}
+
+.date {
+  font-weight: 500;
+  color: #374151;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Enhanced Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #64748b;
+}
+
+.empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.empty-icon svg {
+  width: 64px;
+  height: 64px;
+  color: #cbd5e1;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #6b7280;
+}
+
+/* Loading Animation */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem;
+  color: #64748b;
+  font-size: 1.125rem;
+}
+
+.loading-icon {
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+/* Action Buttons Spacing */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.actions .btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* Role Badge Enhancements */
+.role-badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.025em;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .user-list-container {
+    padding: 0;
+  }
+
+  .table-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .table-actions {
+    justify-content: center;
+  }
+
+  .users-table {
+    font-size: 0.875rem;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .actions .btn {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .role-badge {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
+  }
+}

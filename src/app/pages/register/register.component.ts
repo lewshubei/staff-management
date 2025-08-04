@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
+
+interface UserRole {
+  id: number;
+  name: string;
+  displayName: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-register',
@@ -11,13 +18,30 @@ import { AuthService } from '../../service/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   registerForm = {
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
+    roleId: '', // Add role selection
   };
+
+  // Available roles for registration
+  availableRoles: UserRole[] = [
+    {
+      id: 2,
+      name: 'ROLE_EMPLOYEE',
+      displayName: 'Employee',
+      description: 'Full-time employee with standard access',
+    },
+    {
+      id: 3,
+      name: 'ROLE_INTERN',
+      displayName: 'Intern',
+      description: 'Intern with limited access and learning opportunities',
+    },
+  ];
 
   errorMessage = '';
   successMessage = '';
@@ -25,30 +49,47 @@ export class RegisterComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
+  ngOnInit() {
+    // Set default role to Employee
+    this.registerForm.roleId = '2';
+  }
+
   onSubmit() {
     if (this.validateForm()) {
       this.isLoading = true;
       this.errorMessage = '';
 
-      // Pass all 3 required parameters: username, email, password
+      // Create registration data with role
+      const registrationData = {
+        username: this.registerForm.username,
+        email: this.registerForm.email,
+        password: this.registerForm.password,
+        roleId: parseInt(this.registerForm.roleId),
+      };
+
+      console.log('Registration data:', registrationData);
+
+      // Pass all required parameters including role
       this.auth
         .register(
           this.registerForm.username,
           this.registerForm.email,
-          this.registerForm.password
+          this.registerForm.password,
+          parseInt(this.registerForm.roleId) // Pass roleId as number
         )
         .subscribe({
-          next: (response) => {
+          next: (response: any) => {
             console.log('Registration successful:', response);
-            this.successMessage = 'Registration successful! Please login.';
+            this.successMessage =
+              'Registration successful! Please login to continue.';
             this.isLoading = false;
 
-            // Redirect to login after 2 seconds
+            // Redirect to login after 3 seconds
             setTimeout(() => {
               this.router.navigate(['/login']);
-            }, 2000);
+            }, 3000);
           },
-          error: (error) => {
+          error: (error: any) => {
             console.error('Registration error:', error);
             this.errorMessage =
               error.error?.message || 'Registration failed. Please try again.';
@@ -66,9 +107,16 @@ export class RegisterComponent {
     if (
       !this.registerForm.username ||
       !this.registerForm.email ||
-      !this.registerForm.password
+      !this.registerForm.password ||
+      !this.registerForm.roleId
     ) {
       this.errorMessage = 'Please fill in all required fields';
+      return false;
+    }
+
+    // Validate username length
+    if (this.registerForm.username.length < 3) {
+      this.errorMessage = 'Username must be at least 3 characters';
       return false;
     }
 
@@ -91,6 +139,14 @@ export class RegisterComponent {
       return false;
     }
 
+    // Validate role selection
+    const selectedRoleId = parseInt(this.registerForm.roleId);
+    const validRoleIds = this.availableRoles.map((role) => role.id);
+    if (!validRoleIds.includes(selectedRoleId)) {
+      this.errorMessage = 'Please select a valid role';
+      return false;
+    }
+
     return true;
   }
 
@@ -100,8 +156,15 @@ export class RegisterComponent {
       email: '',
       password: '',
       confirmPassword: '',
+      roleId: '2', // Default to Employee
     };
     this.errorMessage = '';
     this.successMessage = '';
+  }
+
+  // Helper method to get selected role info
+  getSelectedRoleInfo(): UserRole | undefined {
+    const selectedId = parseInt(this.registerForm.roleId);
+    return this.availableRoles.find((role) => role.id === selectedId);
   }
 }

@@ -33,12 +33,24 @@ export class AuthService {
   }
 
   // Register method - expects username, email, and password
-  register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/signup`, {
+  register(
+    username: string,
+    email: string,
+    password: string,
+    roleId?: number
+  ): Observable<any> {
+    const requestBody: any = {
       username: username,
       email: email,
       password: password,
-    });
+    };
+
+    // Add roleId if provided
+    if (roleId) {
+      requestBody.roleId = roleId;
+    }
+
+    return this.http.post(`${this.apiUrl}/auth/signup`, requestBody);
   }
 
   // Check if user is authenticated (ADD THIS METHOD)

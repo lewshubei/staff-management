@@ -150,17 +150,31 @@
   color: #a0aec0;
 }
 
-/* Select dropdown styles */
+/* Enhanced Select Dropdown */
 .form-select {
-  appearance: auto;
-  padding-left: 18px !important;
-  padding-right: 18px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
+  padding-right: 45px !important;
+  cursor: pointer;
 }
 
 .form-select:focus {
   border-color: #667eea;
   background: white;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-select option {
+  padding: 10px;
+  background: white;
+  color: #2d3748;
+}
+
+.form-select option:hover {
+  background: #f7fafc;
 }
 
 /* Button Styles */
@@ -273,6 +287,78 @@
 .login-link:hover {
   color: #764ba2;
   text-decoration: underline;
+}
+
+/* Selected Role Info */
+.selected-role-info {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.role-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+  display: inline-block;
+}
+
+.badge-employee {
+  background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+  color: #1d4ed8;
+}
+
+.badge-intern {
+  background: linear-gradient(135deg, #bbf7d0, #86efac);
+  color: #059669;
+}
+
+.role-description {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.reset-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border: 2px solid #e5e7eb;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  border-color: #9ca3af;
+  color: #374151;
 }
 
 /* Responsive Design */

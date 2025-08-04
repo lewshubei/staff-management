@@ -48,4 +48,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['admin', 'employee', 'intern'] },
   },
+
+  {
+    path: 'test',
+    component: EmployeeDashboardComponent,
+  },
 ];
