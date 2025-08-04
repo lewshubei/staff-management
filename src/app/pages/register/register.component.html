@@ -1,190 +1,81 @@
 <div class="register-container">
   <div class="register-card">
     <div class="register-header">
-      <div class="logo">
-        <div class="logo-icon">
-          <img
-            src="assets/imgs/logo.png"
-            alt="StaffSync Logo"
-            class="logo-image"
-          />
-        </div>
-        <h1>StaffSync</h1>
-      </div>
-      <p class="subtitle">Create your account to get started</p>
+      <h1>Create Account</h1>
+      <p>Join StaffSync today</p>
     </div>
 
-    <form (ngSubmit)="register()" #registerForm="ngForm" class="register-form">
-      <!-- Username -->
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #regForm="ngForm" class="register-form">
       <div class="form-group">
-        <label for="username">Username</label>
-        <div class="input-wrapper">
-          <svg
-            class="input-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
-            />
-          </svg>
-          <input
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-            [(ngModel)]="username"
-            name="username"
-            required
-            class="form-input"
-          />
-        </div>
+        <label for="username">Username *</label>
+        <input
+          id="username"
+          type="text"
+          [(ngModel)]="registerForm.username"
+          name="username"
+          required
+          class="form-input"
+          placeholder="Enter your username"
+        />
       </div>
 
-      <!-- Email -->
       <div class="form-group">
-        <label for="email">Email Address</label>
-        <div class="input-wrapper">
-          <svg
-            class="input-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"
-            />
-          </svg>
-          <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            [(ngModel)]="email"
-            name="email"
-            required
-            class="form-input"
-          />
-        </div>
+        <label for="email">Email *</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="registerForm.email"
+          name="email"
+          required
+          class="form-input"
+          placeholder="Enter your email"
+        />
       </div>
 
-      <!-- Role Selection -->
       <div class="form-group">
-        <label for="role">Role</label>
-        <div class="input-wrapper select-wrapper">
-          <svg
-            class="input-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M12,15C12.81,15 13.5,14.7 14.11,14.11C14.7,13.5 15,12.81 15,12C15,11.19 14.7,10.5 14.11,9.89C13.5,9.3 12.81,9 12,9C11.19,9 10.5,9.3 9.89,9.89C9.3,10.5 9,11.19 9,12C9,12.81 9.3,13.5 9.89,14.11C10.5,14.7 11.19,15 12,15M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2Z"
-            />
-          </svg>
-          <select
-            id="role"
-            [(ngModel)]="selectedRole"
-            name="role"
-            required
-            class="form-input form-select"
-          >
-            <option *ngFor="let role of roles" [value]="role.value">
-              {{ role.label }}
-            </option>
-          </select>
-        </div>
+        <label for="password">Password *</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="registerForm.password"
+          name="password"
+          required
+          class="form-input"
+          placeholder="Enter your password"
+        />
       </div>
 
-      <!-- Password -->
       <div class="form-group">
-        <label for="password">Password</label>
-        <div class="input-wrapper">
-          <svg
-            class="input-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10A2,2 0 0,1 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
-            />
-          </svg>
-          <input
-            id="password"
-            type="password"
-            placeholder="Create a password"
-            [(ngModel)]="password"
-            name="password"
-            required
-            minlength="6"
-            class="form-input"
-          />
-        </div>
-      </div>
-
-      <!-- Confirm Password -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <div class="input-wrapper">
-          <svg
-            class="input-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10A2,2 0 0,1 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
-            />
-          </svg>
-          <input
-            id="confirmPassword"
-            type="password"
-            placeholder="Confirm your password"
-            [(ngModel)]="confirmPassword"
-            name="confirmPassword"
-            required
-            class="form-input"
-          />
-        </div>
+        <label for="confirmPassword">Confirm Password *</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          [(ngModel)]="registerForm.confirmPassword"
+          name="confirmPassword"
+          required
+          class="form-input"
+          placeholder="Confirm your password"
+        />
       </div>
 
       <button
         type="submit"
-        [disabled]="!registerForm.form.valid || isLoading"
+        [disabled]="!regForm.form.valid || isLoading"
         class="register-button"
-        [class.loading]="isLoading"
       >
         <span *ngIf="!isLoading">Create Account</span>
-        <span *ngIf="isLoading" class="loading-spinner"></span>
+        <span *ngIf="isLoading">Creating Account...</span>
       </button>
-
-      <!-- Success Message -->
-      <div *ngIf="successMsg" class="success-message">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path
-            d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"
-          />
-        </svg>
-        {{ successMsg }}
-      </div>
-
-      <!-- Error Message -->
-      <div *ngIf="errorMsg" class="error-message">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path
-            d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17A1.5,1.5 0 0,1 10.5,15.5A1.5,1.5 0 0,1 12,14A1.5,1.5 0 0,1 13.5,15.5A1.5,1.5 0 0,1 12,17M12,10A1,1 0 0,1 13,11V13A1,1 0 0,1 12,14A1,1 0 0,1 11,13V11A1,1 0 0,1 12,10Z"
-          />
-        </svg>
-        {{ errorMsg }}
-      </div>
     </form>
 
     <div class="register-footer">

@@ -1,50 +1,106 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  private apiURL = 'http://localhost:8080/api/auth'; // Updated to match backend
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(data: { username: string; password: string }) {
-    return this.http.post(`${this.apiURL}/signin`, data);
+  // Login method - expects username and password
+  login(username: string, password: string): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/auth/signin`, {
+        username: username,
+        password: password,
+      })
+      .pipe(
+        tap((response: any) => {
+          console.log('Login response:', response);
+
+          // Store the token and user data
+          if (response.accessToken) {
+            localStorage.setItem('token', response.accessToken);
+            localStorage.setItem('user', JSON.stringify(response));
+            console.log('Token stored successfully');
+          }
+        })
+      );
   }
 
-  register(data: any) {
-    return this.http.post(`${this.apiURL}/signup`, data);
+  // Register method - expects username, email, and password
+  register(username: string, email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/signup`, {
+      username: username,
+      email: email,
+      password: password,
+    });
   }
 
-  setToken(token: string) {
-    localStorage.setItem('token', token);
+  // Check if user is authenticated (ADD THIS METHOD)
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return false;
+    }
+
+    // Optional: Check if token is expired
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+      return payload.exp > currentTime;
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      return false;
+    }
   }
 
-  setUserData(userData: any) {
-    localStorage.setItem('token', userData.accessToken);
-    localStorage.setItem('user', JSON.stringify(userData));
+  // Get user role (ADD THIS METHOD)
+  getUserRole(): string | null {
+    const user = this.getCurrentUser();
+    if (user && user.roles && user.roles.length > 0) {
+      // Return the first role, or check for admin specifically
+      return user.roles.includes('ROLE_ADMIN')
+        ? 'admin'
+        : user.roles.includes('ROLE_EMPLOYEE')
+        ? 'employee'
+        : user.roles.includes('ROLE_INTERN')
+        ? 'intern'
+        : null;
+    }
+    return null;
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  // Check if user is admin (HELPER METHOD)
+  isAdmin(): boolean {
+    const role = this.getUserRole();
+    return role === 'admin';
   }
 
-  logout() {
+  // Logout method
+  logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 
-  isAuthenticated(): boolean {
-    return !!this.getToken();
+  // Check if user is logged in (ALIAS for isAuthenticated)
+  isLoggedIn(): boolean {
+    return this.isAuthenticated();
   }
 
-  getUserRole(): string {
+  // Get current user
+  getCurrentUser(): any {
     const user = localStorage.getItem('user');
-    if (!user) return '';
-    const userData = JSON.parse(user);
-    // Backend returns roles like ["ROLE_INTERN"], extract the role part
-    const role = userData.roles[0]; // e.g., "ROLE_INTERN"
-    return role.replace('ROLE_', '').toLowerCase(); // Returns "intern"
+    return user ? JSON.parse(user) : null;
+  }
+
+  // Get token
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }

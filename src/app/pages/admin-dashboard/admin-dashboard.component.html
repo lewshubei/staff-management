@@ -1,0 +1,72 @@
+<div class="admin-layout">
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="header-content">
+      <h1>Admin Dashboard</h1>
+      <div class="user-info">
+        <span>Welcome, {{ currentUser?.username || "Admin" }}</span>
+        <button (click)="logout()" class="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <aside class="admin-sidebar">
+    <nav>
+      <ul>
+        <li>
+          <a
+            routerLink="/admin/dashboard"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            📊 Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/users" routerLinkActive="active">
+            👥 User Management
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/create-user" routerLinkActive="active">
+            ➕ Create User
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/reports" routerLinkActive="active">
+            📈 Reports
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <!-- Dashboard Stats (only show on dashboard page) -->
+    <div class="dashboard-stats" *ngIf="analytics">
+      <div class="stat-card">
+        <h3>Total Users</h3>
+        <p class="stat-number">{{ analytics.totalUsers }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Admins</h3>
+        <p class="stat-number">{{ analytics.adminCount }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Employees</h3>
+        <p class="stat-number">{{ analytics.employeeCount }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Interns</h3>
+        <p class="stat-number">{{ analytics.internCount }}</p>
+      </div>
+    </div>
+
+    <!-- Router Outlet for Sub-pages -->
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

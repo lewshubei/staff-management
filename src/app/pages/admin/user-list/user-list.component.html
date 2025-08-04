@@ -1,0 +1,67 @@
+<div class="user-list-container">
+  <div class="page-header">
+    <h2>User Management</h2>
+    <button routerLink="/admin/create-user" class="btn btn-primary">
+      ➕ Create New User
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">Loading users...</div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <!-- Users Table -->
+  <div class="table-container" *ngIf="!isLoading">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Full Name</th>
+          <th>Role</th>
+          <th>Created Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.fullName || user.username }}</td>
+          <td>
+            <span
+              class="role-badge"
+              [class]="'role-' + (user.primaryRole || 'unknown')"
+            >
+              {{ user.primaryRole || "No Role" }}
+            </span>
+          </td>
+          <td>{{ user.createdAt | date : "short" }}</td>
+          <td class="actions">
+            <button (click)="editUser(user)" class="btn btn-edit">
+              ✏️ Edit
+            </button>
+            <button (click)="deleteUser(user.id!)" class="btn btn-delete">
+              🗑️ Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && users.length === 0" class="empty-state">
+    <p>No users found.</p>
+    <button routerLink="/admin/create-user" class="btn btn-primary">
+      Create First User
+    </button>
+  </div>
+</div>

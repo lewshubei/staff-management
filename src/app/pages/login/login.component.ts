@@ -1,44 +1,50 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../service/auth.service';
-import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterModule], // Add RouterModule for routerLink
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   username = '';
   password = '';
-  errorMsg = '';
+  errorMessage = '';
   isLoading = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  login() {
-    this.isLoading = true;
-    this.errorMsg = '';
-    console.log('Login attempt:', this.username, this.password);
-    this.auth
-      .login({ username: this.username, password: this.password })
-      .subscribe({
-        next: (res: any) => {
-          console.log('Login response:', res);
-          this.auth.setUserData(res); // Store both token and user data
-          const role = this.auth.getUserRole();
-          console.log('User role:', role);
+  onSubmit() {
+    if (this.username && this.password) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      this.authService.login(this.username, this.password).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
           this.isLoading = false;
-          this.router.navigate([`/${role}/dashboard`]);
+
+          // Navigate based on user role
+          if (response.roles && response.roles.includes('ROLE_ADMIN')) {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
-        error: (err) => {
-          console.error('Login error:', err);
+        error: (error) => {
+          console.error('Login error:', error);
+          this.errorMessage =
+            error.error?.message || 'Login failed. Please try again.';
           this.isLoading = false;
-          this.errorMsg = err.error?.message || 'Login failed';
         },
       });
+    } else {
+      this.errorMessage = 'Please enter both username and password';
+    }
   }
 }
