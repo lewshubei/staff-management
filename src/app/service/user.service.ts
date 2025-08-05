@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Role } from '../models/role.model';
+import { tap } from 'rxjs/operators';
 
 export interface UserWithRole extends User {
   fullName?: string;
@@ -105,7 +106,11 @@ export class UserService {
       headers.get('x-access-token') ? 'Token present' : 'No token'
     );
 
-    return this.http.get<UserWithRole[]>(`${this.apiUrl}/users`, { headers });
+    return this.http
+      .get<UserWithRole[]>(`${this.apiUrl}/users`, { headers })
+      .pipe(
+        tap((response) => console.log('UserService - Response:', response))
+      );
   }
 
   // Get user statistics for dashboard

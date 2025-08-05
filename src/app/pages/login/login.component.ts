@@ -37,13 +37,10 @@ export class LoginComponent {
           if (response.roles && response.roles.includes('ROLE_ADMIN')) {
             console.log('✅ Navigating to admin dashboard');
             this.router.navigate(['/admin/dashboard']);
-          } else if (
-            response.roles &&
-            response.roles.includes('ROLE_EMPLOYEE')
-          ) {
+          } else if (response.roles.includes('ROLE_EMPLOYEE')) {
             console.log('✅ Navigating to employee dashboard');
             this.router.navigate(['/employee/dashboard']);
-          } else if (response.roles && response.roles.includes('ROLE_INTERN')) {
+          } else if (response.roles.includes('ROLE_INTERN')) {
             console.log('✅ Navigating to intern dashboard');
             this.router.navigate(['/intern/dashboard']);
           }

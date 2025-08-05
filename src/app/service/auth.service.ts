@@ -33,24 +33,19 @@ export class AuthService {
   }
 
   // Register method - expects username, email, and password
-  register(
-    username: string,
-    email: string,
-    password: string,
-    roleId?: number
-  ): Observable<any> {
-    const requestBody: any = {
-      username: username,
-      email: email,
-      password: password,
-    };
+  register(userData: any): Observable<any> {
+    console.log('🔍 AUTH SERVICE - Data received from component:', userData);
+    console.log(
+      '🔍 AUTH SERVICE - RoleId being sent to backend:',
+      userData.roleId
+    );
+    console.log('🔍 AUTH SERVICE - Request URL:', `${this.apiUrl}/auth/signup`);
 
-    // Add roleId if provided
-    if (roleId) {
-      requestBody.roleId = roleId;
-    }
-
-    return this.http.post(`${this.apiUrl}/auth/signup`, requestBody);
+    return this.http.post(`${this.apiUrl}/auth/signup`, userData).pipe(
+      tap((response: any) => {
+        console.log('🔍 AUTH SERVICE - Backend response:', response);
+      })
+    );
   }
 
   // Check if user is authenticated (ADD THIS METHOD)

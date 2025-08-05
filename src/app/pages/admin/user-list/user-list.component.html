@@ -2,7 +2,7 @@
   <!-- Header -->
   <header class="admin-header">
     <div class="header-content">
-      <h1>StaffSync Admin</h1>
+      <h1>Admin</h1>
       <div class="user-info">
         <span>Welcome, {{ getCurrentUser()?.username || "Admin" }}</span>
         <button (click)="logout()" class="logout-btn">
@@ -207,7 +207,7 @@
             <tbody>
               <tr *ngFor="let user of users" class="user-row">
                 <td>
-                  <span class="user-id">#{{ user.id }}</span>
+                  <span class="user-id">{{ user.id }}</span>
                 </td>
                 <td>
                   <div class="user-info-cell">
@@ -218,7 +218,7 @@
                   <span class="email">{{ user.email }}</span>
                 </td>
                 <td>
-                  <span class="full-name">{{ user.username }}</span>
+                  <span class="full-name">{{ user.fullName }}</span>
                 </td>
                 <td>
                   <span class="role-badge" [class]="getRoleClass(user.roleId)">

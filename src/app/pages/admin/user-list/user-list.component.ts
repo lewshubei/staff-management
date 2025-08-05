@@ -13,7 +13,7 @@ import { User } from '../../../models/user.model';
   styleUrl: './user-list.component.css',
 })
 export class UserListComponent implements OnInit {
-  users: User[] = [];
+  users: any[] = [];
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -38,51 +38,69 @@ export class UserListComponent implements OnInit {
   }
 
   // Update the formatRoleName method to handle role IDs
-  formatRoleName(roleId: number | string | undefined): string {
-    if (!roleId) return 'Unknown';
+  formatRoleName(roleData: any): string {
+    console.log('🔍 formatRoleName input:', roleData);
 
-    // Convert to number if it's a string
-    const id = typeof roleId === 'string' ? parseInt(roleId) : roleId;
+    // Handle different role data formats
+    if (Array.isArray(roleData) && roleData.length > 0) {
+      // roles is an array of role objects
+      return roleData[0].name
+        .replace('ROLE_', '')
+        .toLowerCase()
+        .replace(/^\w/, (c: string) => c.toUpperCase());
+    }
 
-    // Map role IDs to names
-    const roleNames: { [key: number]: string } = {
-      1: 'Admin',
-      2: 'Employee',
-      3: 'Intern',
-    };
+    if (typeof roleData === 'string') {
+      // roles is a string
+      return roleData
+        .replace('ROLE_', '')
+        .toLowerCase()
+        .replace(/^\w/, (c) => c.toUpperCase());
+    }
 
-    return roleNames[id] || 'Unknown';
+    if (typeof roleData === 'number') {
+      // roleId is a number - map to role name
+      const roleMap: { [key: number]: string } = {
+        1: 'Admin',
+        2: 'Employee',
+        3: 'Intern',
+      };
+      return roleMap[roleData] || 'Unknown';
+    }
+
+    return 'No Role';
   }
 
   // Add helper method to get role class for CSS styling
-  getRoleClass(roleId: number | string | undefined): string {
-    if (!roleId) return 'role-unknown';
-
-    const id = typeof roleId === 'string' ? parseInt(roleId) : roleId;
-
-    const roleClasses: { [key: number]: string } = {
-      1: 'role-admin',
-      2: 'role-employee',
-      3: 'role-intern',
-    };
-
-    return roleClasses[id] || 'role-unknown';
+  getRoleClass(roleData: any): string {
+    const roleName = this.formatRoleName(roleData).toLowerCase();
+    return `role-${roleName}`;
   }
 
-  // Your existing methods...
-  loadUsers(): void {
+  loadUsers() {
     this.isLoading = true;
     this.errorMessage = '';
 
     this.userService.getAllUsers().subscribe({
-      next: (response) => {
-        this.users = response || [];
+      next: (response: any[]) => {
+        console.log('FRONTEND - Received users:', response);
+        this.users = response.map((user) => ({
+          ...user,
+          // Transform roles array to display format
+          roleNames: user.roles ? user.roles.map((role: any) => role.name) : [],
+          primaryRole:
+            user.roles && user.roles.length > 0
+              ? user.roles[0].name
+              : 'No Role',
+          roleId: user.roles && user.roles.length > 0 ? user.roles[0].id : null,
+        }));
+        console.log('FRONTEND - Processed users:', this.users);
         this.isLoading = false;
       },
       error: (error) => {
+        console.error('FRONTEND - Error loading users:', error);
         this.errorMessage = 'Failed to load users. Please try again.';
         this.isLoading = false;
-        console.error('Error loading users:', error);
       },
     });
   }

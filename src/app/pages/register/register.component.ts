@@ -21,10 +21,11 @@ interface UserRole {
 export class RegisterComponent implements OnInit {
   registerForm = {
     username: '',
+    fullName: '', // Add this new field
     email: '',
+    roleId: '',
     password: '',
     confirmPassword: '',
-    roleId: '', // Add role selection
   };
 
   // Available roles for registration
@@ -50,8 +51,7 @@ export class RegisterComponent implements OnInit {
   constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
-    // Set default role to Employee
-    this.registerForm.roleId = '2';
+    console.log('🔍 Available roles:', this.availableRoles);
   }
 
   onSubmit() {
@@ -59,43 +59,43 @@ export class RegisterComponent implements OnInit {
       this.isLoading = true;
       this.errorMessage = '';
 
-      // Create registration data with role
       const registrationData = {
         username: this.registerForm.username,
         email: this.registerForm.email,
+        fullName: this.registerForm.fullName,
         password: this.registerForm.password,
         roleId: parseInt(this.registerForm.roleId),
       };
 
-      console.log('Registration data:', registrationData);
+      // Enhanced logging
+      console.log('🔍 FRONTEND - Raw form data:', this.registerForm);
+      console.log(
+        '🔍 FRONTEND - Processed registration data:',
+        registrationData
+      );
+      console.log('🔍 FRONTEND - RoleId type:', typeof registrationData.roleId);
+      console.log('🔍 FRONTEND - RoleId value:', registrationData.roleId);
 
-      // Pass all required parameters including role
-      this.auth
-        .register(
-          this.registerForm.username,
-          this.registerForm.email,
-          this.registerForm.password,
-          parseInt(this.registerForm.roleId) // Pass roleId as number
-        )
-        .subscribe({
-          next: (response: any) => {
-            console.log('Registration successful:', response);
-            this.successMessage =
-              'Registration successful! Please login to continue.';
-            this.isLoading = false;
+      this.auth.register(registrationData).subscribe({
+        next: (response: any) => {
+          console.log('✅ REGISTRATION RESPONSE:', response);
+          // Don't log roles here - registration response doesn't include them
 
-            // Redirect to login after 3 seconds
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 3000);
-          },
-          error: (error: any) => {
-            console.error('Registration error:', error);
-            this.errorMessage =
-              error.error?.message || 'Registration failed. Please try again.';
-            this.isLoading = false;
-          },
-        });
+          this.successMessage =
+            'Registration successful! Please login to continue.';
+          this.isLoading = false;
+
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 3000);
+        },
+        error: (error: any) => {
+          console.error('❌ Registration error:', error);
+          this.errorMessage =
+            error.error?.message || 'Registration failed. Please try again.';
+          this.isLoading = false;
+        },
+      });
     }
   }
 
@@ -103,11 +103,13 @@ export class RegisterComponent implements OnInit {
     // Reset error message
     this.errorMessage = '';
 
-    // Check required fields
+    // Check required fields - ADD fullName validation
     if (
       !this.registerForm.username ||
+      !this.registerForm.fullName ||
       !this.registerForm.email ||
       !this.registerForm.password ||
+      !this.registerForm.confirmPassword ||
       !this.registerForm.roleId
     ) {
       this.errorMessage = 'Please fill in all required fields';
@@ -117,6 +119,12 @@ export class RegisterComponent implements OnInit {
     // Validate username length
     if (this.registerForm.username.length < 3) {
       this.errorMessage = 'Username must be at least 3 characters';
+      return false;
+    }
+
+    // Validate fullName length
+    if (this.registerForm.fullName.length < 2) {
+      this.errorMessage = 'Full name must be at least 2 characters';
       return false;
     }
 
@@ -153,10 +161,11 @@ export class RegisterComponent implements OnInit {
   resetForm() {
     this.registerForm = {
       username: '',
+      fullName: '', // Add this to reset function
       email: '',
+      roleId: '', // Default to Employee
       password: '',
       confirmPassword: '',
-      roleId: '2', // Default to Employee
     };
     this.errorMessage = '';
     this.successMessage = '';
@@ -166,5 +175,11 @@ export class RegisterComponent implements OnInit {
   getSelectedRoleInfo(): UserRole | undefined {
     const selectedId = parseInt(this.registerForm.roleId);
     return this.availableRoles.find((role) => role.id === selectedId);
+  }
+  onRoleChange() {
+    console.log('Role changed to:', this.registerForm.roleId);
+    console.log('Role type:', typeof this.registerForm.roleId);
+    const selectedRole = this.getSelectedRoleInfo();
+    console.log('Selected role info:', selectedRole);
   }
 }
