@@ -106,7 +106,7 @@ export class UserListComponent implements OnInit {
   }
 
   editUser(user: User): void {
-    // Navigate to edit page or open edit modal
+    // Open edit modal
     this.router.navigate(['/admin/edit-user', user.id]);
   }
 

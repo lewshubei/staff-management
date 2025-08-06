@@ -1,0 +1,181 @@
+<div class="edit-user-layout">
+  <header class="admin-header">
+    <div class="header-content">
+      <h1>Edit User</h1>
+      <div class="user-info">
+        <span>{{ getCurrentUser()?.username }}</span>
+        <button (click)="logout()" class="logout-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"
+            />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="edit-user-main">
+    <div class="breadcrumb">
+      <button (click)="goBack()" class="back-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+          />
+        </svg>
+        Back to Users
+      </button>
+    </div>
+
+    <div class="edit-form-container" *ngIf="!isLoading">
+      <h2>Edit User Information</h2>
+
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+
+      <form (ngSubmit)="updateUser()" #editForm="ngForm">
+        <!-- Basic Information -->
+        <div class="form-section">
+          <h3>Basic Information</h3>
+
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              [(ngModel)]="userForm.username"
+              required
+              class="form-input"
+              [class.error]="!userForm.username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="userForm.email"
+              required
+              class="form-input"
+              [class.error]="!userForm.email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              [(ngModel)]="userForm.fullName"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="role">Role:</label>
+            <select
+              id="role"
+              name="role"
+              [(ngModel)]="userForm.roleId"
+              required
+              class="form-input"
+            >
+              <option value="" disabled>Select a role</option>
+              <option *ngFor="let role of availableRoles" [value]="role.id">
+                {{ formatRoleName(role.name) }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Internship Information (only for interns) -->
+        <div class="internship-section" *ngIf="isIntern()">
+          <h3>Internship Information</h3>
+
+          <div class="form-group">
+            <label for="internshipStart">Start Date:</label>
+            <input
+              type="date"
+              id="internshipStart"
+              name="internshipStart"
+              [(ngModel)]="userForm.internshipStart"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="internshipEnd">End Date:</label>
+            <input
+              type="date"
+              id="internshipEnd"
+              name="internshipEnd"
+              [(ngModel)]="userForm.internshipEnd"
+              class="form-input"
+            />
+          </div>
+        </div>
+
+        <!-- Password Reset Section -->
+        <div class="form-section">
+          <h3>Password Reset</h3>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                [(ngModel)]="resetPassword"
+                name="resetPassword"
+              />
+              Reset user password
+            </label>
+          </div>
+
+          <div class="form-group" *ngIf="resetPassword">
+            <label for="newPassword">New Password:</label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              [(ngModel)]="userForm.password"
+              [required]="resetPassword"
+              minlength="6"
+              class="form-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="goBack()" class="cancel-btn">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="!editForm.valid || isSubmitting"
+            class="save-btn"
+          >
+            {{ isSubmitting ? "Saving..." : "Save Changes" }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading user information...</p>
+    </div>
+  </main>
+</div>

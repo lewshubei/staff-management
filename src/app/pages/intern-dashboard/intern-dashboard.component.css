@@ -1,0 +1,417 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+.intern-layout {
+  min-height: 100vh;
+  background: #f0fdf4;
+  font-family: "Inter", sans-serif;
+}
+
+.intern-header {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 0 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.intern-main {
+  padding: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+}
+
+.loading p {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #10b981;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #fecaca;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+.success-message {
+  background: #f0fdf4;
+  color: #16a34a;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #bbf7d0;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+.internship-setup {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.setup-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.setup-card h2 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.setup-card p {
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+.setup-card p strong {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.period-display {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.period-display h2 {
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.period-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.period-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.period-item:last-child {
+  border-bottom: none;
+}
+
+.info-note {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+  text-align: center;
+}
+
+.info-note p {
+  margin: 0;
+  color: #64748b;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Welcome Banner */
+.welcome-banner {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+}
+
+.welcome-content h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+}
+
+.welcome-content p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.welcome-icon {
+  font-size: 3rem;
+}
+
+/* Period Cards */
+.period-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.period-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.period-card:hover {
+  transform: translateY(-2px);
+}
+
+.start-card {
+  border-left: 4px solid #10b981;
+}
+
+.duration-card {
+  border-left: 4px solid #3b82f6;
+}
+
+.end-card {
+  border-left: 4px solid #f59e0b;
+}
+
+.card-icon {
+  font-size: 2rem;
+  width: 60px;
+  text-align: center;
+}
+
+.card-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  font-family: "Inter", sans-serif;
+}
+
+.date-value {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: "Inter", sans-serif;
+}
+
+/* Progress Section */
+.progress-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.progress-section h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.progress-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 600;
+  color: #1e293b;
+  font-family: "Inter", sans-serif;
+}
+
+.progress-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  font-family: "Inter", sans-serif;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
+}
+
+.stat-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  font-family: "Inter", sans-serif;
+}
+
+.stat-info p {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: "Inter", sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .welcome-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .period-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .progress-details {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}

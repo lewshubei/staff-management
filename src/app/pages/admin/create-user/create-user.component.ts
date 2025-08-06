@@ -206,19 +206,25 @@ export class CreateUserComponent implements OnInit {
 
   // Role description mapping
   getRoleDescription(roleName: string | undefined): string {
-    if (!roleName) return 'Standard user role';
+    if (!roleName) {
+      return 'Standard user role';
+    }
+    // Normalize the role name to uppercase for comparison
+    const normalizedRoleName = roleName.toUpperCase();
 
     const descriptions: { [key: string]: string } = {
-      ROLE_ADMIN: 'Full administrative access to all system features',
-      ROLE_EMPLOYEE: 'Standard employee access with full system permissions',
-      ROLE_INTERN: 'Limited access for interns with learning opportunities',
-      ROLE_USER: 'Basic user access with standard permissions',
+      ADMIN: 'Full administrative access to all system features',
+      EMPLOYEE: 'Standard employee access with full system permissions',
+      INTERN: 'Limited access for interns with learning opportunities',
     };
 
-    return descriptions[roleName] || 'Standard user role';
+    const description =
+      descriptions[normalizedRoleName] || 'Standard user role';
+
+    return description;
   }
 
-  // Add these methods for header functionality
+  // for header component
   getCurrentUser(): any {
     return this.authService.getCurrentUser();
   }

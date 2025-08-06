@@ -9,6 +9,9 @@ export interface UserWithRole extends User {
   fullName?: string;
   primaryRole?: string;
   roles?: Role[];
+  // Add internship fields
+  internshipStart?: string;
+  internshipEnd?: string;
 }
 
 export interface UserStatsResponse {
@@ -33,6 +36,9 @@ export interface UpdateUserRequest {
   email?: string;
   fullName?: string;
   roleId?: number;
+  password?: string;
+  internshipStart?: string;
+  internshipEnd?: string;
 }
 
 export interface ApiResponse {

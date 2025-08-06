@@ -8,6 +8,7 @@ import { EmployeeDashboardComponent } from './pages/employee-dashboard/employee-
 import { InternDashboardComponent } from './pages/intern-dashboard/intern-dashboard.component';
 import { UserListComponent } from './pages/admin/user-list/user-list.component';
 import { CreateUserComponent } from './pages/admin/create-user/create-user.component';
+import { EditUserComponent } from './pages/admin/edit-user/edit-user.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -29,6 +30,10 @@ export const routes: Routes = [
     component: CreateUserComponent,
     canActivate: [AuthGuard],
     data: { roles: ['admin'] },
+  },
+  {
+    path: 'admin/edit-user/:id',
+    component: EditUserComponent,
   },
   {
     path: 'employee/dashboard',

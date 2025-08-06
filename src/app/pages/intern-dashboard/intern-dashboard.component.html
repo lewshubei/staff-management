@@ -1,1 +1,226 @@
-<p>intern-dashboard works!</p>
+<div class="intern-layout">
+  <header class="intern-header">
+    <div class="header-content">
+      <h1>Intern Dashboard</h1>
+      <div class="user-info">
+        <span>Welcome, {{ getCurrentUser()?.username || "Intern" }}</span>
+        <button (click)="logout()" class="logout-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"
+            />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="intern-main">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading your information...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <!-- Content when not loading -->
+    <div *ngIf="!isLoading">
+      <!-- Internship Period Setup (when period is null) - ONE TIME SETUP -->
+      <div *ngIf="needsInternshipPeriod" class="internship-setup">
+        <div class="setup-card">
+          <h2>Set Up Your Internship Period</h2>
+          <p>
+            Please provide your internship start and end dates.
+            <strong>Note: Once set, you cannot modify these dates.</strong>
+          </p>
+
+          <form (ngSubmit)="updateInternshipPeriod()" class="period-form">
+            <div class="form-group">
+              <label for="startDate">Internship Start Date:</label>
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                [(ngModel)]="internshipForm.startDate"
+                class="form-input"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="endDate">Internship End Date:</label>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                [(ngModel)]="internshipForm.endDate"
+                class="form-input"
+                required
+              />
+            </div>
+
+            <button type="submit" class="save-btn" [disabled]="isSubmitting">
+              {{ isSubmitting ? "Setting Period..." : "Set Internship Period" }}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Dashboard Content (when period exists) - READ ONLY DISPLAY -->
+      <div *ngIf="!needsInternshipPeriod">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-content">
+            <h2>Welcome Back, {{ getCurrentUser()?.username }}!</h2>
+            <p>Your internship journey is in progress</p>
+          </div>
+          <div class="welcome-icon">🎯</div>
+        </div>
+
+        <!-- Internship Period Cards -->
+        <div class="period-cards">
+          <div class="period-card start-card">
+            <div class="card-icon">🚀</div>
+            <div class="card-content">
+              <h3>Start Date</h3>
+              <p class="date-value">
+                {{ formatDate(currentUser?.internshipStart) }}
+              </p>
+            </div>
+          </div>
+
+          <div class="period-card duration-card">
+            <div class="card-icon">⏰</div>
+            <div class="card-content">
+              <h3>Duration</h3>
+              <p class="date-value">{{ calculateDuration() }} days</p>
+            </div>
+          </div>
+
+          <div class="period-card end-card">
+            <div class="card-icon">🏁</div>
+            <div class="card-content">
+              <h3>End Date</h3>
+              <p class="date-value">
+                {{ formatDate(currentUser?.internshipEnd) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+          <h3>Internship Progress</h3>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                [style.width.%]="getProgressPercentage()"
+              ></div>
+            </div>
+            <span class="progress-text"
+              >{{ getProgressPercentage() }}% Complete</span
+            >
+          </div>
+          <div class="progress-details">
+            <span>{{ getDaysCompleted() }} days completed</span>
+            <span>{{ getDaysRemaining() }} days remaining</span>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-info">
+              <h4>Days Completed</h4>
+              <p>{{ getDaysCompleted() }}</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-info">
+              <h4>Days Remaining</h4>
+              <p>{{ getDaysRemaining() }}</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">📈</div>
+            <div class="stat-info">
+              <h4>Progress</h4>
+              <p>{{ getProgressPercentage() }}%</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-info">
+              <h4>Status</h4>
+              <p>{{ getInternshipStatus() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Features -->
+        <div class="welcome-section">
+          <h2>Intern Portal</h2>
+          <p>Explore your internship resources and tools</p>
+        </div>
+
+        <div class="intern-features">
+          <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Learning Resources</h3>
+            <p>
+              Access training materials and documentation to enhance your skills
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <h3>Tasks & Projects</h3>
+            <p>View your assigned tasks and track project progress</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Mentor Support</h3>
+            <p>Connect with your mentors and supervisors for guidance</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Progress Tracking</h3>
+            <p>Monitor your internship progress and achievements</p>
+          </div>
+        </div>
+
+        <!-- Info Note -->
+        <div class="info-note">
+          <p>
+            <em
+              >Need to modify your internship period? Please contact your
+              supervisor or administrator.</em
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
